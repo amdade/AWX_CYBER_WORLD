@@ -1,0 +1,91 @@
+---
+  - name: Provision EC2 Instance
+    hosts: localhost
+    tasks:
+      - name: EC2 Security Group
+        ec2_group:
+          name: ansible-tower
+          description: ansible-tower security group
+          vpc_id: vpc-1d063575
+          region: us-east-2
+          rules:
+            - proto: tcp
+              ports:
+              - 22
+              - 80
+              - 3389
+              cidr_ip: 0.0.0.0/0
+            - proto: icmp
+              from_port: 0
+              to_port: 65535
+              cidr_ip: 0.0.0.0/0
+
+      - name: Launch CentOS7
+        ec2:
+          aws_region: us-east-2
+          image: ami-0f2b4fc905b0bd1f1
+          instance_type: t2.micro
+          instance_tags:
+            Name: CentOS7
+          count: 1
+          wait: yes
+          vpc_subnet_id: subnet-c10697bb
+          assign_public_ip: yes
+          user_data: |
+                     #!/bin/bash
+                     echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDdI0fSayJM4kPO1IJH7WVygXy2c0t7woi2OHiIL4QjEqarNB5Ba9wy21soIyVraVFkB7wagaxFON2UCZstFJYC+Kjh8L6pZndipqaLpkwexRQ740ACv3CGc3k2kwxEfIL0tzT6EoPymiTq/FYATMY7YCx/MVUURPAyOLzFpz18PkR1g2PzkR3DWoOAqNR2GE0+ckz0k2g4Nml13Ns7sh44Yxvrp0Oyb9kPQvT8wbFkl+zXE0Ydl2CF5DLcPo36so4h3TA5zehckBNjhE/IISRXV+W/upeoVZJ48fKcM394kn/N14A4oVvgBo/ZiKrkhEFRokoVg3aAlM0JXVVRPH4F root@awx" >> /root/.ssh/authorized_keys
+          group: ansible-tower
+          key_name: MyLaptop
+
+      - name: Launch Ubuntu-16.04
+        ec2:
+          aws_region: us-east-2
+          image: ami-0653e888ec96eab9b
+          instance_type: t2.micro
+          instance_tags:
+            Name: Ubuntu-16.04
+          count: 1
+          wait: yes
+          vpc_subnet_id: subnet-8ca8f3e4
+          assign_public_ip: yes
+          user_data: |
+                     #!/bin/sh
+                     sudo apt-get install python -y
+                     echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDdI0fSayJM4kPO1IJH7WVygXy2c0t7woi2OHiIL4QjEqarNB5Ba9wy21soIyVraVFkB7wagaxFON2UCZstFJYC+Kjh8L6pZndipqaLpkwexRQ740ACv3CGc3k2kwxEfIL0tzT6EoPymiTq/FYATMY7YCx/MVUURPAyOLzFpz18PkR1g2PzkR3DWoOAqNR2GE0+ckz0k2g4Nml13Ns7sh44Yxvrp0Oyb9kPQvT8wbFkl+zXE0Ydl2CF5DLcPo36so4h3TA5zehckBNjhE/IISRXV+W/upeoVZJ48fKcM394kn/N14A4oVvgBo/ZiKrkhEFRokoVg3aAlM0JXVVRPH4F root@awx" >> /root/.ssh/authorized_keys
+          group: ansible-tower
+          key_name: MyLaptop
+
+      - name: Launch Ubuntu-16.04
+        ec2:
+          aws_region: us-east-2
+          image: ami-0653e888ec96eab9b
+          instance_type: t2.micro
+          instance_tags:
+            Name: Ubuntu-16.04
+          count: 1
+          wait: yes
+          vpc_subnet_id: subnet-8ca8f3e4
+          assign_public_ip: yes
+          user_data: |
+                     #!/bin/sh
+                     sudo apt-get install python -y
+                     echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDdI0fSayJM4kPO1IJH7WVygXy2c0t7woi2OHiIL4QjEqarNB5Ba9wy21soIyVraVFkB7wagaxFON2UCZstFJYC+Kjh8L6pZndipqaLpkwexRQ740ACv3CGc3k2kwxEfIL0tzT6EoPymiTq/FYATMY7YCx/MVUURPAyOLzFpz18PkR1g2PzkR3DWoOAqNR2GE0+ckz0k2g4Nml13Ns7sh44Yxvrp0Oyb9kPQvT8wbFkl+zXE0Ydl2CF5DLcPo36so4h3TA5zehckBNjhE/IISRXV+W/upeoVZJ48fKcM394kn/N14A4oVvgBo/ZiKrkhEFRokoVg3aAlM0JXVVRPH4F root@awx" >> /root/.ssh/authorized_keys
+          group: ansible-tower
+          key_name: MyLaptop
+
+      - name: Launch Windows 2016
+        ec2:
+          aws_region: us-east-2
+          image: ami-04be6a27b0206807f
+          instance_type: t2.micro
+          instance_tags:
+            Name: Windows-2016
+          count: 1
+          wait: yes
+          vpc_subnet_id: subnet-11e51d5d
+          assign_public_ip: yes
+          user_data: |
+                     #!/bin/bash
+                     echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDdI0fSayJM4kPO1IJH7WVygXy2c0t7woi2OHiIL4QjEqarNB5Ba9wy21soIyVraVFkB7wagaxFON2UCZstFJYC+Kjh8L6pZndipqaLpkwexRQ740ACv3CGc3k2kwxEfIL0tzT6EoPymiTq/FYATMY7YCx/MVUURPAyOLzFpz18PkR1g2PzkR3DWoOAqNR2GE0+ckz0k2g4Nml13Ns7sh44Yxvrp0Oyb9kPQvT8wbFkl+zXE0Ydl2CF5DLcPo36so4h3TA5zehckBNjhE/IISRXV+W/upeoVZJ48fKcM394kn/N14A4oVvgBo/ZiKrkhEFRokoVg3aAlM0JXVVRPH4F root@awx" >> %HOMEDRIVE%%HOMEPATH%/.ssh/authorized_keys
+          group: ansible-tower
+          key_name: MyLaptop
